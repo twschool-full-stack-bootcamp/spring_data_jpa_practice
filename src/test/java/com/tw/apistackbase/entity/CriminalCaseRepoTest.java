@@ -16,14 +16,17 @@ import static org.junit.jupiter.api.Assertions.*;
 public class CriminalCaseRepoTest {
 
     @Autowired
-    private CriminalCaseRepo caseRepo;
+    private CriminalCaseRepo criminalCaseRepo;
+
+    @Autowired
+    private CriminalElementRepo criminalElementRepo;
 
     @Test
     public void should_throw_exception_when_save_case_without_any_fields() {
         CriminalCase criminalCase = new CriminalCase();
 
         assertThrows(Exception.class, () ->
-                caseRepo.saveAndFlush(criminalCase));
+                criminalCaseRepo.saveAndFlush(criminalCase));
     }
 
     @Test
@@ -32,9 +35,9 @@ public class CriminalCaseRepoTest {
         criminalCase.setTime((long) 1);
         criminalCase.setName("name");
 
-        caseRepo.save(criminalCase);
+        criminalCaseRepo.save(criminalCase);
 
-        assertSame(1, new ArrayList<>(caseRepo.findAll()).size());
+        assertSame(1, new ArrayList<>(criminalCaseRepo.findAll()).size());
     }
 
     @Test
@@ -48,11 +51,11 @@ public class CriminalCaseRepoTest {
         CriminalCase criminalCase2 = new CriminalCase();
         criminalCase2.setTime((long) 3);
         criminalCase2.setName("c");
-        caseRepo.save(criminalCase);
-        caseRepo.save(criminalCase1);
-        caseRepo.save(criminalCase2);
+        criminalCaseRepo.save(criminalCase);
+        criminalCaseRepo.save(criminalCase1);
+        criminalCaseRepo.save(criminalCase2);
 
-        List<CriminalCase> allByOrderByTimeDesc = caseRepo.findAllByOrderByTimeDesc();
+        List<CriminalCase> allByOrderByTimeDesc = criminalCaseRepo.findAllByOrderByTimeDesc();
 
         assertEquals("a", new ArrayList<>(allByOrderByTimeDesc).get(0).getName());
     }
@@ -68,15 +71,32 @@ public class CriminalCaseRepoTest {
         CriminalCase criminalCase2 = new CriminalCase();
         criminalCase2.setTime((long) 3);
         criminalCase2.setName("b");
-        caseRepo.save(criminalCase);
-        caseRepo.save(criminalCase1);
-        caseRepo.save(criminalCase2);
+        criminalCaseRepo.save(criminalCase);
+        criminalCaseRepo.save(criminalCase1);
+        criminalCaseRepo.save(criminalCase2);
 
-        List<CriminalCase> b = caseRepo.findAllByName("b");
+        List<CriminalCase> b = criminalCaseRepo.findAllByName("b");
 
         assertEquals(2, new ArrayList<>(b).size());
         assertEquals("b", new ArrayList<>(b).get(0).getName());
         assertEquals("b", new ArrayList<>(b).get(1).getName());
     }
 
+    @Test
+    public void should_return_criminal_case_with_criminal_element_when_save_criminal_with_criminal_element() {
+        CriminalCase criminalCase = new CriminalCase();
+        criminalCase.setTime((long) 1);
+        criminalCase.setName("name");
+        CriminalElements criminalElements = new CriminalElements();
+        criminalElements.setObjectiveElementDescription("objective");
+        criminalElements.setSubjectiveElementDescription("subjective");
+        criminalCase.setCriminalElements(criminalElements);
+
+        criminalCaseRepo.saveAndFlush(criminalCase);
+
+        ArrayList<CriminalElements> criminalElementsList = new ArrayList<>(criminalElementRepo.findAll());
+        assertEquals(1, criminalElementsList.size());
+        assertSame(1, new ArrayList<>(criminalCaseRepo.findAll()).size());
+        assertEquals("objective", criminalElementsList.get(0).getObjectiveElementDescription());
+    }
 }

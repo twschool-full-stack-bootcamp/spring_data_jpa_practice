@@ -3,9 +3,7 @@ package com.tw.apistackbase.entity;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
@@ -20,6 +18,9 @@ public class CriminalCase {
     private String name;
     @NotNull
     private Long time;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private CriminalElements criminalElements;
 
     public String getId() {
         return id;
@@ -43,5 +44,13 @@ public class CriminalCase {
 
     public void setTime(Long time) {
         this.time = time;
+    }
+
+    public CriminalElements getCriminalElements() {
+        return criminalElements;
+    }
+
+    public void setCriminalElements(CriminalElements criminalElements) {
+        this.criminalElements = criminalElements;
     }
 }
