@@ -17,7 +17,6 @@ public class Prosecutor {
     private String id;
 
     @NotNull
-    @Column(length = 255)
     private String name;
 
     public String getId() {

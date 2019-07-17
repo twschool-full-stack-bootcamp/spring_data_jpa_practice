@@ -2,10 +2,8 @@ package com.tw.apistackbase.entity;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class Procuratorate {
@@ -17,6 +15,9 @@ public class Procuratorate {
 
     @Column(length = 50, unique = true, nullable = false)
     private String name;
+
+    @OneToMany(cascade = {CascadeType.ALL})
+    private List<Prosecutor> prosecutors;
 
 
     public String getId() {
@@ -33,5 +34,13 @@ public class Procuratorate {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<Prosecutor> getProsecutors() {
+        return prosecutors;
+    }
+
+    public void setProsecutors(List<Prosecutor> prosecutors) {
+        this.prosecutors = prosecutors;
     }
 }
