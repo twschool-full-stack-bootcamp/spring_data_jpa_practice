@@ -7,7 +7,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -56,6 +55,28 @@ public class CriminalCaseRepoTest {
         List<CriminalCase> allByOrderByTimeDesc = caseRepo.findAllByOrderByTimeDesc();
 
         assertEquals("a", new ArrayList<>(allByOrderByTimeDesc).get(0).getName());
+    }
+
+    @Test
+    public void should_return_case_when_find_by_name() {
+        CriminalCase criminalCase = new CriminalCase();
+        criminalCase.setTime((long) 1);
+        criminalCase.setName("a");
+        CriminalCase criminalCase1 = new CriminalCase();
+        criminalCase1.setTime((long) 2);
+        criminalCase1.setName("b");
+        CriminalCase criminalCase2 = new CriminalCase();
+        criminalCase2.setTime((long) 3);
+        criminalCase2.setName("b");
+        caseRepo.save(criminalCase);
+        caseRepo.save(criminalCase1);
+        caseRepo.save(criminalCase2);
+
+        List<CriminalCase> b = caseRepo.findAllByName("b");
+
+        assertEquals(2, new ArrayList<>(b).size());
+        assertEquals("b", new ArrayList<>(b).get(0).getName());
+        assertEquals("b", new ArrayList<>(b).get(1).getName());
     }
 
 }

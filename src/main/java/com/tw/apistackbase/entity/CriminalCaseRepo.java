@@ -8,4 +8,6 @@ public interface CriminalCaseRepo extends JpaRepository<CriminalCase, String> {
 
     List<CriminalCase> findAllByOrderByTimeDesc();
 
+    List<CriminalCase> findAllByName(String name);
+
 }
