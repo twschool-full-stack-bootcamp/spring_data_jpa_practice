@@ -22,6 +22,10 @@ public class CriminalCase {
     @OneToOne(cascade = CascadeType.ALL)
     private CriminalElements criminalElements;
 
+    @NotNull
+    @OneToOne(cascade = CascadeType.ALL)
+    private Procuratorate procuratorate;
+
     public String getId() {
         return id;
     }
@@ -52,5 +56,13 @@ public class CriminalCase {
 
     public void setCriminalElements(CriminalElements criminalElements) {
         this.criminalElements = criminalElements;
+    }
+
+    public Procuratorate getProcuratorate() {
+        return procuratorate;
+    }
+
+    public void setProcuratorate(Procuratorate procuratorate) {
+        this.procuratorate = procuratorate;
     }
 }
